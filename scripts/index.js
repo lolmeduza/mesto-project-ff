@@ -16,7 +16,7 @@ function createCard(data, onDelete) {
   const cardName = listElement.querySelector(".card__image");
   cardName.src = data.link;
   cardName.alt = data.alt;
-  listElement.querySelector(".card__description").textContent = data.name;
+  listElement.querySelector(".card__title").textContent = data.name;
   const deleteButton = listElement.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", () => {
     const listItem = deleteButton.closest(".card");

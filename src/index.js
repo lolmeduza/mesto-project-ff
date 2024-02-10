@@ -7,7 +7,7 @@
 // @todo: Функция удаления карточки
 
 // @todo: Вывести карточки на страницу
-
+import "./pages/index.css";
 function createCard(data, onDelete) {
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate

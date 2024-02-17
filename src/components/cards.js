@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
   {
     name: "Архыз",
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
@@ -30,3 +30,20 @@ const initialCards = [
     alt: "Байкал",
   },
 ];
+
+export function createCard(data, onDelete) {
+  const listTemplate = document.querySelector("#card-template").content;
+  const listElement = listTemplate
+    .querySelector(".places__item")
+    .cloneNode(true);
+  const cardName = listElement.querySelector(".card__image");
+  cardName.src = data.link;
+  cardName.alt = data.alt;
+  listElement.querySelector(".card__title").textContent = data.name;
+  const deleteButton = listElement.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", () => {
+    const listItem = deleteButton.closest(".card");
+    onDelete(listItem);
+  });
+  return listElement;
+}

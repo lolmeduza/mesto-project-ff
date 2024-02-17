@@ -13,3 +13,6 @@
     width: calc(100% - 40px);
   }
 }
+.profile__image {
+  background-image: url("../../../images/avatar.jpg");
+}

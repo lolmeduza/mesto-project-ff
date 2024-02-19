@@ -25,30 +25,10 @@ initialCards.forEach((card) => {
   renderCard(createCard(card, handleDeleteCard));
 });
 
-const keydownCallback = function (evt, modal) {
-  console.log("Keydown callback");
-  if (evt.key === "Escape") {
-    closeModal(modal, keydownCallback, clickCallback);
-    // evt.target.removeEventListener("keydown", keydownCallback);
-  }
-};
-
-const clickCallback = function (evt, modal) {
-  console.log("Click callback");
-  const classList = evt.target.classList;
-  if (
-    classList.contains("popup_type_edit") ||
-    classList.contains("popup_type_new-card")
-  ) {
-    closeModal(modal, keydownCallback, clickCallback);
-    // evt.target.removeEventListener("click", clickCallback);
-  }
-};
-
 const modalEdit = document.querySelector(".popup_type_edit");
 const buttonEdit = document.querySelector(".profile__edit-button");
 buttonEdit.addEventListener("click", () => {
-  openModal(modalEdit, keydownCallback, clickCallback);
+  openModal(modalEdit);
 });
 
 const buttonClose = document.querySelector(".popup__close");
@@ -59,7 +39,7 @@ buttonClose.addEventListener("click", () => {
 const modalAdd = document.querySelector(".popup_type_new-card");
 const buttonAdd = document.querySelector(".profile__add-button");
 buttonAdd.addEventListener("click", () => {
-  openModal(modalAdd, keydownCallback, clickCallback);
+  openModal(modalAdd);
 });
 
 const buttonAddClose = document.querySelector(".button__add__close");
@@ -82,3 +62,65 @@ function handleFormSubmit(evt) {
   closeModal(modalEdit);
 }
 formElement.addEventListener("submit", handleFormSubmit);
+
+//клик по фотке
+
+// const modalImage = document.querySelector(".card__image");
+// modal.addEventListener("click", () => {
+//   openModal(modalImage);
+// });
+
+// document.addEventListener("click", function (evt) {
+//   if (evt.target.classList.contains("card__image")) {
+//     evt.target.classList.toggle("popup_type_image");
+//   }
+// });
+
+// const buttonClose = document.querySelector(".popup__close");
+// buttonClose.addEventListener("click", () => {
+//   closeModal(modalEdit);
+// });
+
+//это html
+// popup_type_image">
+//         <div class="popup__content popup__content_content_image">
+//           <button type="button" class="popup__close"></button>
+
+// добавление карточек
+{
+  //<form class="popup__form" name="new-place"></form>
+  /* <button type="submit" class="button popup__button">Сохранить</button> */
+}
+
+// карточки
+// function addCard() {
+//   const cardTemplate = document.querySelector("#card-template").content;
+//   const cardElement = cardTemplate
+//     .querySelector(".places__item")
+//     .cloneNode(true);
+//   const imageElement = document
+//     .querySelector(".places__list")
+//     .append(cardElement);
+//   songElement.querySelector(".song__artist").textContent = artistValue;
+//   songElement.querySelector(".song__title").textContent = titleValue;
+// }
+function addtoStartCard(element) {
+  document.querySelector(".places__list").prepend(element);
+}
+
+const formCardAdd = document.querySelector('[name="new-place"]');
+const cardInput = formCardAdd.querySelector(".popup__input_type_card-name");
+const urlInput = formCardAdd.querySelector(".popup__input_type_url");
+function handleAddSubmit(evt) {
+  evt.preventDefault();
+  const data = {
+    name: cardInput.value,
+    link: urlInput.value,
+    alt: cardInput.value,
+  };
+
+  addtoStartCard(createCard(data, handleDeleteCard));
+  closeModal(modalAdd);
+  formCardAdd.reset();
+}
+formCardAdd.addEventListener("submit", handleAddSubmit);

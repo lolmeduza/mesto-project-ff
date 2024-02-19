@@ -47,3 +47,28 @@ export function createCard(data, onDelete) {
   });
   return listElement;
 }
+
+//Если лайкнуть карточку, сердечко поменяет цвет
+//Обратите внимание что функцию обработчика лайка нужно передать в функцию создания карточки как аргумент.
+// Это понадобится в будущем для интеграции с API.
+
+// doc.addEventListener("click", ({ target }) => {
+//   const likeBtn = target.closest(".selector")
+// const likeButtonArray = document.querySelectorAll(".card__like-button");
+// likeButtonArray.forEach((button, index) => {
+//   button.onclick = () => toggleIsLiked(likeHeartArray[index], button);
+// });
+// likeButtonArray.forEach((button, index) => {
+//   button.onclick = () => toggleIsLiked(likeHeartArray[index], button);
+// });
+
+// function toggleIsLiked(heart, button) {
+//   heart.classList.toggle("is-liked");
+//   setButtonText(heart, button);
+// }
+
+document.addEventListener("click", function (evt) {
+  if (evt.target.classList.contains("card__like-button")) {
+    evt.target.classList.toggle("card__like-button_is-active");
+  }
+});

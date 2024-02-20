@@ -46,11 +46,6 @@ export function createCard(data, onDelete, like, openModalImage) {
     onDelete(listItem);
   });
 
-  // listElement.addEventListener("click", () => {
-  //   listElement.style.width = "100%";
-  //   listElement.style.transform = "scale(2)";
-  // });
-
   const popupImage = document.querySelector(".popup_type_image");
   cardName.addEventListener("click", () => {
     const popImageselected = popupImage.querySelector(".popup__image");
@@ -58,31 +53,20 @@ export function createCard(data, onDelete, like, openModalImage) {
     popImageselected.alt = cardName.alt;
     popupImage.querySelector(".popup__caption").textContent = data.name;
     openModalImage(popupImage);
-    console.log(popImageselected);
   });
 
   listElement.addEventListener("click", () => {});
   const likeButton = listElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", like);
-
   return listElement;
 }
 
-//Если лайкнуть карточку, сердечко поменяет цвет
-//Обратите внимание что функцию обработчика лайка нужно передать в функцию создания карточки как аргумент.
-// Это понадобится в будущем для интеграции с API.
+export function like(evt) {
+  if (evt.target.classList.contains("card__like-button")) {
+    evt.target.classList.toggle("card__like-button_is-active");
+  }
+}
 
-// doc.addEventListener("click", ({ target }) => {
-//   const likeBtn = target.closest(".selector")
-// const likeButtonArray = document.querySelectorAll(".card__like-button");
-// likeButtonArray.forEach((button, index) => {
-//   button.onclick = () => toggleIsLiked(likeHeartArray[index], button);
-// });
-// likeButtonArray.forEach((button, index) => {
-//   button.onclick = () => toggleIsLiked(likeHeartArray[index], button);
-// });
-
-// function toggleIsLiked(heart, button) {
-//   heart.classList.toggle("is-liked");
-//   setButtonText(heart, button);
-// }
+export function handleDeleteCard(element) {
+  element.remove();
+}

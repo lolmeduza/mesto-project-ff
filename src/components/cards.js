@@ -31,7 +31,7 @@ export const initialCards = [
   },
 ];
 
-export function createCard(data, onDelete) {
+export function createCard(data, onDelete, like, openModalImage) {
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate
     .querySelector(".places__item")
@@ -45,6 +45,26 @@ export function createCard(data, onDelete) {
     const listItem = deleteButton.closest(".card");
     onDelete(listItem);
   });
+
+  // listElement.addEventListener("click", () => {
+  //   listElement.style.width = "100%";
+  //   listElement.style.transform = "scale(2)";
+  // });
+
+  const popupImage = document.querySelector(".popup_type_image");
+  cardName.addEventListener("click", () => {
+    const popImageselected = popupImage.querySelector(".popup__image");
+    popImageselected.src = cardName.src;
+    popImageselected.alt = cardName.alt;
+    popupImage.querySelector(".popup__caption").textContent = data.name;
+    openModalImage(popupImage);
+    console.log(popImageselected);
+  });
+
+  listElement.addEventListener("click", () => {});
+  const likeButton = listElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", like);
+
   return listElement;
 }
 
@@ -66,9 +86,3 @@ export function createCard(data, onDelete) {
 //   heart.classList.toggle("is-liked");
 //   setButtonText(heart, button);
 // }
-
-document.addEventListener("click", function (evt) {
-  if (evt.target.classList.contains("card__like-button")) {
-    evt.target.classList.toggle("card__like-button_is-active");
-  }
-});

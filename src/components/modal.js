@@ -39,21 +39,10 @@ export function closeModal(modal) {
   document.removeEventListener("keydown", keydownCallback);
   document.removeEventListener("click", clickCallback);
 
-  // console.log(modal);
-  // document.removeEventListener("keydown", (evt) => {
-  //   evt.stopPropagation();
-  //   keydownCallback(evt, modal);
-  // });
-  // document.removeEventListener("click", (evt) => {
-  //   evt.stopPropagation();
-  //   clickCallback(evt, modal);
-  // });
   modal.style.display = "none";
 }
 
-//const buttonOpen = document.querySelector(".popup__close");
-{
-  /* <dialog style="padding: 0">
+/* <dialog style="padding: 0">
   <div id="modal-box" style="padding: 1rem">
     <div>Modal content</div>
     <button id="close-modal-btn">Close</button>
@@ -83,26 +72,10 @@ document.addEventListener('click', (e) => {
     modal.close()
   }
 }) */
+
+export function openModalImage(modal) {
+  modal.style.display = "flex";
+  document.addEventListener("keydown", keydownCallback);
+  document.addEventListener("click", clickCallback);
+  console.log(modal);
 }
-
-// Колбэк для загрузки изображений
-
-// // колбэк, который нужно выполнить после того
-// // как изображение загрузится
-// function imageLoadCallback(evt) {
-//   // после загрузки добавим элемент изображения в DOM
-//   document.body.append(evt.target);
-// }
-// // Функция для создания изображения
-// function loadImage(imageUrl, loadCallback) {
-//   const img = document.createElement('img');
-//   img.src = imageUrl;
-//   // Функция, которая записана в onload
-//   // будет вызвана после загрузки изображения
-//   img.onload = loadCallback;
-// }
-// // Теперь картинка появится в разметке только после загрузки
-// loadImage(
-//   'https://yastatic.net/q/logoaas/v1/Практикум.svg',
-//   imageLoadCallback
-// );

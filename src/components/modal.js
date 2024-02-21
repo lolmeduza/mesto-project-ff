@@ -1,19 +1,23 @@
-let openedModal = "";
+// let openedModal = "";
 
 function keydownCallback(evt) {
+  console.log(evt.target);
   if (evt.key === "Escape") {
-    closeModal(keydownCallback, clickCallback);
+    let popOpened = document.querySelector(".popup_is-opened");
+    closeModal(popOpened);
   }
 }
 
 function clickCallback(evt) {
+  console.log(evt.target);
   const classList = evt.target.classList;
   if (
     classList.contains("popup_type_edit") ||
     classList.contains("popup_type_new-card") ||
     classList.contains("popup_type_image")
   ) {
-    closeModal(keydownCallback, clickCallback);
+    let popOpened = document.querySelector(".popup_is-opened");
+    closeModal(popOpened);
   }
 }
 const popUps = document.querySelectorAll(".popup");
@@ -21,39 +25,48 @@ popUps.forEach((popUp) => {
   popUp.classList.toggle("popup_is-animated");
 });
 
-export function openEditModal(modal) {
-  modal.querySelector(".popup__input_type_name").value =
-    document.querySelector(".profile__title").textContent;
-  modal.querySelector(".popup__input_type_description").value =
-    document.querySelector(".profile__description").textContent;
-  openedModal = modal;
-  document.addEventListener("keydown", keydownCallback);
-  document.addEventListener("click", clickCallback);
-  openedModal.classList.toggle("popup_is-opened");
-}
+// export function openEditModal(modal) {
+//   modal.querySelector(".popup__input_type_name").value =
+//     document.querySelector(".profile__title").textContent;
+//   modal.querySelector(".popup__input_type_description").value =
+//     document.querySelector(".profile__description").textContent;
+//   openedModal = modal;
+//   document.addEventListener("keydown", keydownCallback);
+//   document.addEventListener("click", clickCallback);
+//   openedModal.classList.toggle("popup_is-opened");
+// }
+
+// export function openModal(modal) {
+//   openedModal = modal;
+//   document.addEventListener("keydown", keydownCallback);
+//   document.addEventListener("click", clickCallback);
+//   openedModal.classList.toggle("popup_is-opened");
+// }
+
+// export function openModalImage(modal) {
+//   openedModal = modal;
+//   document.addEventListener("keydown", keydownCallback);
+//   document.addEventListener("click", clickCallback);
+//   openedModal.classList.toggle("popup_is-opened");
+// }
 
 export function openModal(modal) {
-  openedModal = modal;
+  // openedModal = modal;
   document.addEventListener("keydown", keydownCallback);
   document.addEventListener("click", clickCallback);
-  openedModal.classList.toggle("popup_is-opened");
+  modal.classList.toggle("popup_is-opened");
+  //
 }
 
-export function closeModal() {
+export function closeModal(modal) {
   document.removeEventListener("keydown", keydownCallback);
   document.removeEventListener("click", clickCallback);
-  openedModal.classList.remove("popup_is-opened");
+  console.log(modal.classList);
+  modal.classList.remove("popup_is-opened");
   if (
-    openedModal.querySelector("form") &&
-    openedModal.querySelector("form").name === "new-place"
+    modal.querySelector("form") &&
+    modal.querySelector("form").name === "new-place"
   ) {
-    openedModal.querySelector("form").reset();
+    modal.querySelector("form").reset();
   }
-}
-
-export function openModalImage(modal) {
-  openedModal = modal;
-  document.addEventListener("keydown", keydownCallback);
-  document.addEventListener("click", clickCallback);
-  openedModal.classList.toggle("popup_is-opened");
 }

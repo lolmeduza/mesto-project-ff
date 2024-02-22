@@ -10,12 +10,7 @@
 
 import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
-import {
-  openModal,
-  closeModal,
-  // openModalImage,
-  // openEditModal,
-} from "./components/modal.js";
+import { openModal, closeModal } from "./components/modal.js";
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitle = document.querySelector(".profile__title");
@@ -44,21 +39,22 @@ const buttonCloseModalEditProfile = document.querySelector(".popup__close");
 buttonCloseModalEditProfile.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
-// const popupImage = document.querySelector(".popup_type_image"); //?
+
 const buttonImageClose = document.querySelector(".popup__image__close");
 buttonImageClose.addEventListener("click", () => {
-  closeModal();
+  closeModal(modalAddCard);
 });
 
 const modalAddCard = document.querySelector(".popup_type_new-card");
 const buttonOpenAddCardPopup = document.querySelector(".profile__add-button");
 buttonOpenAddCardPopup.addEventListener("click", () => {
+  formCardAdd.reset();
   openModal(modalAddCard);
 });
 
 const buttonCloseAddCardPopup = document.querySelector(".button__add__close");
 buttonCloseAddCardPopup.addEventListener("click", () => {
-  closeModal();
+  closeModal(modalAddCard);
 });
 
 const formEditProfile = document.querySelector('[name="edit-profile"]');
@@ -70,7 +66,7 @@ function submitFormEditProfile(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closeModal();
+  closeModal(modalEditProfile);
 }
 formEditProfile.addEventListener("submit", submitFormEditProfile);
 
@@ -90,7 +86,7 @@ function handleAddSubmit(evt) {
   };
 
   prependCard(createCard(data, handleDeleteCard, like, clickImageFullScreen));
-  closeModal();
+  closeModal(modalAddCard);
   formCardAdd.reset();
 }
 formCardAdd.addEventListener("submit", handleAddSubmit);

@@ -1,19 +1,15 @@
 function keydownCallback(evt) {
   if (evt.key === "Escape") {
-    let popOpened = document.querySelector(".popup_is-opened");
-    closeModal(popOpened);
+    const popup = document.querySelector(".popup_is-opened");
+    closeModal(popup);
   }
 }
 
 function clickCallback(evt) {
   const classList = evt.target.classList;
-  if (
-    classList.contains("popup_type_edit") ||
-    classList.contains("popup_type_new-card") ||
-    classList.contains("popup_type_image")
-  ) {
-    let popOpened = document.querySelector(".popup_is-opened");
-    closeModal(popOpened);
+  if (classList.contains("popup")) {
+    const popup = document.querySelector(".popup_is-opened");
+    closeModal(popup);
   }
 }
 

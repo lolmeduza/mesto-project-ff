@@ -10,3 +10,14 @@
     line-height: 22px;
   }
 }
+.popup__input:focus {
+  outline: none;
+}
+.popup__input:focus-visible {
+  border: 2px solid blue;
+}
+
+.name-input-error {
+  display: block;
+  color: red;
+}

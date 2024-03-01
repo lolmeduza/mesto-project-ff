@@ -12,6 +12,11 @@ import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { like, handleDeleteCard, createCard } from "./components/card.js";
+// import { isValid } from "./components/validation.js";
+// import { cardsServer, userServer } from "./components/api.js";
+// console.log(cardsServer);
+// console.log(userServer);
+
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitle = document.querySelector(".profile__title");
@@ -98,3 +103,12 @@ function clickImageFullScreen(data) {
   popupImage.querySelector(".popup__caption").textContent = data.name;
   openModal(popupImage);
 }
+
+// nameInput.addEventListener("input", function () {
+//   // toggleButtonState(inputList, buttonElement);
+//   isValid(formEditProfile, nameInput);
+// });
+// jobInput.addEventListener("input", function () {
+//   // toggleButtonState(inputList, buttonElement);
+//   isValid(formEditProfile, jobInput);
+// });

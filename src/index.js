@@ -9,14 +9,14 @@
 // @todo: Вывести карточки на страницу
 
 import "./pages/index.css";
-import { initialCards } from "./components/cards.js";
+// import { initialCards } from "./components/cards.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { like, handleDeleteCard, createCard } from "./components/card.js";
-// import { isValid } from "./components/validation.js";
-// import { cardsServer, userServer } from "./components/api.js";
-// console.log(cardsServer);
+import { enableValidation } from "./components/validation.js";
+import { cardsServer, userServer, deleteCard } from "./components/api.js";
+console.log(cardsServer());
 // console.log(userServer);
-
+enableValidation();
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitle = document.querySelector(".profile__title");
@@ -24,8 +24,11 @@ const profileTitle = document.querySelector(".profile__title");
 function renderCard(element) {
   placesList.append(element);
 }
-initialCards.forEach((card) => {
-  renderCard(createCard(card, handleDeleteCard, like, clickImageFullScreen));
+cardsServer().then((cards) => {
+  cards.forEach((card) => {
+    // deleteCard(card._id);
+    renderCard(createCard(card, handleDeleteCard, like, clickImageFullScreen));
+  });
 });
 
 const modalEditProfile = document.querySelector(".popup_type_edit");

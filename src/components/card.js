@@ -1,4 +1,4 @@
-export function createCard(data, onDelete, like, clickImageFullScreen) {
+export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate
     .querySelector(".places__item")
@@ -32,3 +32,29 @@ export function like(evt) {
 export function handleDeleteCard(element) {
   element.remove();
 }
+
+//spizdil
+// export const createCardElement=(
+// data,{
+//   onPreviewPicture, onLikeIcon, onDeleteCard
+// }userID
+// )=>{
+// const cardElement = getTemplate();
+// const likeButton=cardElement.querySelector('.card__like-button')
+// const deleteButton = cardElement.querySelector('.card__delete-button')
+// const cardImage = cardElement.querySelector('.card__image')
+// const likesCount = cardElement.querySelector('.card__like-count')
+// }
+//проверка лайка
+// const isLiked = data.likes.some((like)=>
+// like.id==userId)
+// if(isLiked) LikeButton.classList.add('card__like-button_is-active');
+// likesCount.textContent=data.likes.length
+//удалить карточку может только владелец карточки
+// if (data.owner._id == userId && onDeleteCard) {
+//   deleteButton.addEventListener("click", () => {
+//     onDeleteCard(data._id, cardElement);
+//   });
+// } else {
+//   deleteButton.remove();
+// }

@@ -26,7 +26,7 @@
 // // В поле «Имя» должно быть от 2 до 40 символов.
 // // В поле «О себе» должно быть от 2 до 200 символов.
 const showInputError = (formElement, inputElement, errorMessage) => {
-  console.log(`.${inputElement.id}-error`);
+  // console.log(`.${inputElement.id}-error`);
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add("form__input_type_error");
   errorElement.textContent = errorMessage;
@@ -34,14 +34,14 @@ const showInputError = (formElement, inputElement, errorMessage) => {
 };
 
 const hideInputError = (formElement, inputElement) => {
-  console.log(`.${inputElement.id}-error`);
+  // console.log(`.${inputElement.id}-error`);
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove("form__input_type_error");
   errorElement.classList.remove("form__input-error_active");
   errorElement.textContent = "";
 };
 
-export const isValid = (formElement, inputElement) => {
+const isValid = (formElement, inputElement) => {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -69,7 +69,7 @@ const setEventListeners = (formElement) => {
   });
 };
 
-const enableValidation = () => {
+export const enableValidation = () => {
   // Найдём все формы с указанным классом в DOM,
   // сделаем из них массив методом Array.from
   const formList = Array.from(document.querySelectorAll(".popup__form"));
@@ -82,4 +82,16 @@ const enableValidation = () => {
   });
 };
 // Вызовем функцию
-enableValidation();
+
+// Функция принимает массив полей
+
+const hasInvalidInput = (inputList) => {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+    // Если поле не валидно, колбэк вернёт true
+    // Обход массива прекратится и вся функция
+    // hasInvalidInput вернёт true
+
+    return !inputElement.validity.valid;
+  });
+};

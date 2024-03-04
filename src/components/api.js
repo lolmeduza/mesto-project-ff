@@ -1,6 +1,6 @@
 // описаны функции для взаимодействия с сервером;
 
-import { createCard } from "./card";
+// import { createCard } from "./card";
 
 // https://mesto.nomoreparties.co/
 export const cardsServer = async () => {
@@ -13,27 +13,32 @@ export const cardsServer = async () => {
   return result_1;
 };
 
-export const userServer = fetch(
-  "https://nomoreparties.co/v1/pwff-cohort-1/users/me",
-  {
-    method: "GET",
-    headers: {
-      authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
-    },
-  }
-)
-  .then((res) => res.json())
-  .then((result) => {
-    // console.log(result);
-  });
+export const userServer = async () => {
+  const res = await fetch(
+    "https://nomoreparties.co/v1/pwff-cohort-1/users/me",
+    {
+      headers: {
+        authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+      },
+    }
+  );
+  const result_1 = await res.json();
+  return result_1;
+};
 
-//понадобится
-// Promise.all([
-//   fetch().then((data) => data.json()),
-//   fetch().then((data) => data.json()),
-// ]).then(([cards, userId]) => {
-//   createCard(cards, userId);
-// });
+// export const userServer = fetch(
+//   "https://nomoreparties.co/v1/pwff-cohort-1/users/me",
+//   {
+//     method: "GET",
+//     headers: {
+//       authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+//     },
+//   }
+// )
+//   .then((res) => res.json())
+//   .then((result) => {
+//     return result;
+//   });
 
 //РЕДАКТИРОВАНИЕ ПРОФИЛЯ
 const changeUserName = fetch(
@@ -45,15 +50,13 @@ const changeUserName = fetch(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: "Marie Skłodowska Curie",
-      about: "Physicist and Chemist",
+      name: "Andrey Syrbu",
+      about: "front student",
     }),
   }
 )
   .then((res) => res.json())
-  .then((result) => {
-    console.log(result);
-  });
+  .then((result) => {});
 
 //Добавление новой карточки
 export const addNewCard = (nameCard, imageNew) => {
@@ -91,3 +94,34 @@ export const deleteCard = async (cardId) => {
   return result_1;
 };
 // https://nomoreparties.co/v1/cohortId/cards/65e21582889c8e0019b3e684
+
+// лайк;
+// export const usersLikeCard = fetch(
+//   `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+//   {
+//     method: "PUT",
+//     headers: {
+//       authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+//       "Content-Type": "text/json",
+//     },
+//   }
+// )
+//   .then((res) => res.json())
+//   .then((result) => {
+//     console.log(result);
+//   });
+
+// export const usersLikeCard = async (cardId) => {
+//   const res = await fetch(
+//     `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+//     {
+//       method: "PUT",
+//       headers: {
+//         authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+//         "Content-Type": "text/json",
+//       },
+//     }
+//   );
+//   const result_likes = await res.json();
+//   return result_likes;
+// };

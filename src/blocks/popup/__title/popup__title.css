@@ -13,11 +13,16 @@
 .popup__input:focus {
   outline: none;
 }
-.popup__input:focus-visible {
+.popup__input:valid:focus-visible {
   border: 2px solid blue;
 }
 
 .name-input-error {
   display: block;
   color: red;
+  font-size: 12px;
+}
+
+.popup__input:invalid {
+  border-bottom: 1px solid red;
 }

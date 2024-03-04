@@ -53,11 +53,13 @@ const isValid = (formElement, inputElement) => {
     hideInputError(formElement, inputElement);
   }
 };
+
 const setEventListeners = (formElement) => {
   // Находим все поля внутри формы,
   // сделаем из них массив методом Array.from
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-
+  const buttonElement = formElement.querySelector(".popup__button");
+  toggleButtonState(inputList, buttonElement);
   // Обойдём все элементы полученной коллекции
   inputList.forEach((inputElement) => {
     // каждому полю добавим обработчик события input
@@ -65,6 +67,7 @@ const setEventListeners = (formElement) => {
       // Внутри колбэка вызовем isValid,
       // передав ей форму и проверяемый элемент
       isValid(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
     });
   });
 };
@@ -93,5 +96,28 @@ const hasInvalidInput = (inputList) => {
     // hasInvalidInput вернёт true
 
     return !inputElement.validity.valid;
+  });
+};
+
+// Функция принимает массив полей ввода
+// и элемент кнопки, состояние которой нужно менять
+
+const toggleButtonState = (inputList, buttonElement) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.disabled = true;
+    buttonElement.classList.add("popup__button_inactive");
+  } else {
+    // иначе сделай кнопку активной
+    buttonElement.disabled = false;
+    buttonElement.classList.remove("popup__button_inactive");
+  }
+};
+
+export const clearValidation = (pageForm, validationConfig) => {
+  const inputList = Array.from(pageForm.querySelectorAll(".popup__input"));
+  inputList.forEach((inputElement) => {
+    hideInputError(pageForm, inputElement);
   });
 };

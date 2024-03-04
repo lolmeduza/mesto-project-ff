@@ -1,3 +1,5 @@
+import { deleteCard } from "./api";
+
 export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate
@@ -7,11 +9,17 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   cardName.src = data.link;
   cardName.alt = data.alt;
   listElement.querySelector(".card__title").textContent = data.name;
-  const deleteButton = listElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", () => {
-    const listItem = deleteButton.closest(".card");
-    onDelete(listItem);
-  });
+  console.log(userID);
+  if (data.owner._id == userID) {
+    const deleteButton = listElement.querySelector(".card__delete-button");
+    deleteButton.addEventListener("click", () => {
+      const listItem = deleteButton.closest(".card");
+      onDelete(listItem);
+      deleteCard(data._id);
+    });
+  } else {
+    deleteButton.remove();
+  }
 
   cardName.addEventListener("click", () => {
     clickImageFullScreen(data);
@@ -33,7 +41,6 @@ export function handleDeleteCard(element) {
   element.remove();
 }
 
-//spizdil
 // export const createCardElement=(
 // data,{
 //   onPreviewPicture, onLikeIcon, onDeleteCard
@@ -50,11 +57,3 @@ export function handleDeleteCard(element) {
 // like.id==userId)
 // if(isLiked) LikeButton.classList.add('card__like-button_is-active');
 // likesCount.textContent=data.likes.length
-//удалить карточку может только владелец карточки
-// if (data.owner._id == userId && onDeleteCard) {
-//   deleteButton.addEventListener("click", () => {
-//     onDeleteCard(data._id, cardElement);
-//   });
-// } else {
-//   deleteButton.remove();
-// }

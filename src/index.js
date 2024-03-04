@@ -12,24 +12,40 @@ import "./pages/index.css";
 // import { initialCards } from "./components/cards.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { like, handleDeleteCard, createCard } from "./components/card.js";
-import { enableValidation } from "./components/validation.js";
-import { cardsServer, userServer, deleteCard } from "./components/api.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
+import {
+  cardsServer,
+  userServer,
+  deleteCard,
+  addNewCard,
+} from "./components/api.js";
 console.log(cardsServer());
 // console.log(userServer);
 enableValidation();
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitle = document.querySelector(".profile__title");
+let user = {};
 
 function renderCard(element) {
   placesList.append(element);
 }
-cardsServer().then((cards) => {
+
+Promise.all([cardsServer(), userServer()]).then(([cards, user]) => {
+  user = user;
   cards.forEach((card) => {
-    // deleteCard(card._id);
-    renderCard(createCard(card, handleDeleteCard, like, clickImageFullScreen));
+    renderCard(
+      createCard(card, handleDeleteCard, like, clickImageFullScreen, user._id)
+    );
   });
 });
+
+// cardsServer().then((cards) => {
+//   cards.forEach((card) => {
+//     // deleteCard(card._id);
+//     renderCard(createCard(card, handleDeleteCard, like, clickImageFullScreen));
+//   });
+// });
 
 const modalEditProfile = document.querySelector(".popup_type_edit");
 const buttonOpenModalEditProfile = document.querySelector(
@@ -39,6 +55,7 @@ const buttonOpenModalEditProfile = document.querySelector(
 buttonOpenModalEditProfile.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  clearValidation(formEditProfile);
   openModal(modalEditProfile);
 });
 
@@ -91,9 +108,13 @@ function handleAddSubmit(evt) {
     name: cardInput.value,
     link: urlInput.value,
     alt: cardInput.value,
+    owner: user,
   };
 
-  prependCard(createCard(data, handleDeleteCard, like, clickImageFullScreen));
+  prependCard(
+    createCard(data, handleDeleteCard, like, clickImageFullScreen, user._id)
+  );
+  addNewCard(cardInput.value, urlInput.value);
   closeModal(modalAddCard);
   formCardAdd.reset();
 }
@@ -114,4 +135,9 @@ function clickImageFullScreen(data) {
 // jobInput.addEventListener("input", function () {
 //   // toggleButtonState(inputList, buttonElement);
 //   isValid(formEditProfile, jobInput);
+// });
+
+// const buttonCloseModalEditProfile = document.querySelector(".popup__close");
+// buttonCloseModalEditProfile.addEventListener("click", () => {
+//   closeModal(modalEditProfile);
 // });

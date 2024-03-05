@@ -111,17 +111,49 @@ export const deleteCard = async (cardId) => {
 //     console.log(result);
 //   });
 
-// export const usersLikeCard = async (cardId) => {
-//   const res = await fetch(
-//     `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
-//     {
-//       method: "PUT",
-//       headers: {
-//         authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
-//         "Content-Type": "text/json",
-//       },
-//     }
-//   );
-//   const result_likes = await res.json();
-//   return result_likes;
-// };
+export const usersLikeCardAdd = async (cardId) => {
+  const res = await fetch(
+    `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+    {
+      method: "PUT",
+      headers: {
+        authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const result_likes = await res.json();
+  return result_likes;
+};
+
+export const usersLikeCardDelete = async (cardId) => {
+  const res = await fetch(
+    `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+    {
+      method: "DELETE",
+      headers: {
+        authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const result_deleteLikes = await res.json();
+  return result_deleteLikes;
+};
+
+export const usersLikeChange = async (cardId) => {
+  const res = await fetch(
+    `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+    {
+      method: "PATCH",
+      headers: {
+        authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const result_Changelikes = await res.json();
+  return result_Changelikes;
+};
+
+// PATCH https://nomoreparties.co/v1/cohortId/users/me/avatar

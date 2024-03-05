@@ -17,3 +17,14 @@
     padding: 30px 20px;
   }
 }
+
+.popup__content_confirm {
+  max-width: 430px;
+  width: 100%;
+  min-height: 180px;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 1px 36px;
+}

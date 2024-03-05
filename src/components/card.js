@@ -1,4 +1,4 @@
-import { deleteCard } from "./api";
+import { usersLikeCardAdd, usersLikeCardDelete } from "./api";
 
 export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const listTemplate = document.querySelector("#card-template").content;
@@ -9,13 +9,22 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   cardName.src = data.link;
   cardName.alt = data.alt;
   listElement.querySelector(".card__title").textContent = data.name;
-  console.log(userID);
+  const likesCount = listElement.querySelector(".likes_count");
+  likesCount.textContent = data.likes.length;
+
+  // const isLiked = data.likes.some((like) => like.id == userID);
+  // if (isLiked) likeButton.classList.add("card__like-button_is-active");
+  // likesCount.textContent = data.likes.length;
+
+  const deleteButton = listElement.querySelector(".card__delete-button");
+  // console.log(userID);
+  // console.log(data.owner);
+  const listItem = deleteButton.closest(".card");
   if (data.owner._id == userID) {
-    const deleteButton = listElement.querySelector(".card__delete-button");
     deleteButton.addEventListener("click", () => {
-      const listItem = deleteButton.closest(".card");
-      onDelete(listItem);
-      deleteCard(data._id);
+      // openModal(modalConfirm);
+      onDelete(data._id, listItem);
+      // deleteCard(data._id);
     });
   } else {
     deleteButton.remove();
@@ -53,7 +62,3 @@ export function handleDeleteCard(element) {
 // const likesCount = cardElement.querySelector('.card__like-count')
 // }
 //проверка лайка
-// const isLiked = data.likes.some((like)=>
-// like.id==userId)
-// if(isLiked) LikeButton.classList.add('card__like-button_is-active');
-// likesCount.textContent=data.likes.length

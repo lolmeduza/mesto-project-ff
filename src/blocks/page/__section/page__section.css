@@ -13,9 +13,9 @@
     width: calc(100% - 40px);
   }
 }
-.profile__image {
+/* .profile__image {
   background-image: url("../../../images/avatar.jpg");
-}
+} */
 
 /* .avatar_handler_change:hover {
   width: 26px;

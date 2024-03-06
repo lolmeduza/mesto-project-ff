@@ -41,7 +41,7 @@
                   id="link-input"
                   type="url"
                   name="link"
-                  class="popup__input popup__input_type_url"
+                  class="popup__input popup__input_type_url avatar_url"
                   placeholder="Ссылка на картинку"
                   required
                 />
@@ -57,9 +57,9 @@
           </div>
 
           <div class="profile__info">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
-            <p class="profile__description">Исследователь океана</p>
+            <p class="profile__description"></p>
           </div>
           <button class="profile__add-button" type="button"></button>
         </section>
@@ -104,7 +104,10 @@
               required
             />
             <span class="form__input-error description-input-error"></span>
-            <button type="submit" class="button popup__button">
+            <button
+              type="submit"
+              class="button popup__button popup__button_change_name"
+            >
               Сохранить
             </button>
           </form>

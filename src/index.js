@@ -11,16 +11,19 @@
 import "./pages/index.css";
 // import { initialCards } from "./components/cards.js";
 import { openModal, closeModal } from "./components/modal.js";
-import { like, handleDeleteCard, createCard } from "./components/card.js";
+import { handleDeleteCard, createCard } from "./components/card.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import {
   cardsServer,
   userServer,
   deleteCard,
   addNewCard,
+  changeUserName,
+  changeAvatar,
+  usersLikeCardAdd,
+  usersLikeCardDelete,
 } from "./components/api.js";
 console.log(cardsServer());
-// console.log(userServer);
 enableValidation();
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
@@ -40,10 +43,16 @@ Promise.all([cardsServer(), userServer()]).then(([cards, user]) => {
   });
 });
 
+const loadAvatar = document.querySelector(".profile__image");
 userServer().then((res) => {
-  const loadAvatar = document.querySelector(".profile__image");
   loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
   console.log(res);
+});
+
+//загрузка имени
+userServer().then((res) => {
+  profileTitle.innerHTML = `${res.name}`;
+  profileDescription.innerHTML = `${res.about}`;
 });
 
 const modalEditProfile = document.querySelector(".popup_type_edit");
@@ -61,7 +70,24 @@ buttonOpenModalEditProfile.addEventListener("click", () => {
 const buttonCloseModalEditProfile = document.querySelector(
   ".popup_type_edit_close"
 );
+
 buttonCloseModalEditProfile.addEventListener("click", () => {
+  closeModal(modalEditProfile);
+});
+
+// popup__button_change_name кнопка сохранить
+// это для изменения имени и работы
+const buttonChangeNamenJob = document.querySelector(
+  ".popup__button_change_name"
+);
+buttonChangeNamenJob.addEventListener("click", (evt) => {
+  evt.preventDefault();
+  const nameValue = nameInput.value;
+  const jobValue = jobInput.value;
+  changeUserName(nameValue, jobValue).then((res) => {
+    (profileTitle.innerHTML = `${res.name}`),
+      (profileDescription.innerHTML = `${res.about}`);
+  });
   closeModal(modalEditProfile);
 });
 
@@ -115,7 +141,6 @@ function handleAddSubmit(evt) {
     _id: user._id,
   };
 
-  console.log(data);
   prependCard(createCard(data, onDelete, like, clickImageFullScreen, user._id));
   addNewCard(cardInput.value, urlInput.value); //fixit
   closeModal(modalAddCard);
@@ -157,13 +182,9 @@ function onDelete(cardId, element) {
 }
 
 const modalAvatarChange = document.querySelector(".popup_avatar");
-// const buttonOpenModalAvatar = document.querySelector(".Avatar__edit-button");
 const buttonOpenModalAvatar = document.querySelector(".profile__image");
-// profile__image;
+
 buttonOpenModalAvatar.addEventListener("click", () => {
-  // nameInput.value = profileTitle.textContent;
-  // jobInput.value = profileDescription.textContent;
-  // clearValidation(formEditProfile);
   openModal(modalAvatarChange);
 });
 
@@ -173,3 +194,33 @@ const buttonCloseModalAvatarChange = document.querySelector(
 buttonCloseModalAvatarChange.addEventListener("click", () => {
   closeModal(modalAvatarChange);
 });
+
+const buttonChangeAvatar = document.querySelector(".popup__button_avatar");
+buttonChangeAvatar.addEventListener("click", (evt) => {
+  evt.preventDefault();
+  const avatarUrl = document.querySelector(".avatar_url").value;
+  console.log(avatarUrl);
+  changeAvatar(avatarUrl).then((res) =>
+    loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`)
+  );
+  closeModal(modalAvatarChange);
+});
+
+function like(evt, id) {
+  console.log(id);
+  if (evt.target.classList.contains("card__like-button")) {
+    const likesCount = evt.target.querySelector(".likes_count");
+    if (evt.target.classList.contains("card__like-button_is-active")) {
+      usersLikeCardDelete(id).then((res) => {
+        likesCount.textContent = res.likes.length;
+      });
+      // likesCount.textContent--;
+    } else {
+      usersLikeCardAdd(id).then((res) => {
+        likesCount.textContent = res.likes.length;
+      });
+      // likesCount.textContent++;
+    }
+  }
+  evt.target.classList.toggle("card__like-button_is-active");
+}

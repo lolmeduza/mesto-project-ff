@@ -41,26 +41,29 @@ export const userServer = async () => {
 //   });
 
 //РЕДАКТИРОВАНИЕ ПРОФИЛЯ
-const changeUserName = fetch(
-  "https://nomoreparties.co/v1/pwff-cohort-1/users/me",
-  {
-    method: "PATCH",
-    headers: {
-      authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "Andrey Syrbu",
-      about: "front student",
-    }),
-  }
-)
-  .then((res) => res.json())
-  .then((result) => {});
+
+export const changeUserName = async (name, description) => {
+  const res = await fetch(
+    "https://nomoreparties.co/v1/pwff-cohort-1/users/me",
+    {
+      method: "PATCH",
+      headers: {
+        authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        about: description,
+      }),
+    }
+  );
+  const result_1 = await res.json();
+  return result_1;
+};
 
 //Добавление новой карточки
-export const addNewCard = (nameCard, imageNew) => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/cards", {
+export const addNewCard = async (nameCard, imageNew) => {
+  const res = await fetch("https://nomoreparties.co/v1/pwff-cohort-1/cards", {
     method: "POST",
     headers: {
       authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
@@ -70,11 +73,9 @@ export const addNewCard = (nameCard, imageNew) => {
       name: nameCard,
       link: imageNew,
     }),
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result_1 = await res.json();
+  return result_1;
 };
 // https://images.unsplash.com/photo-1601042879364-f3947d3f9c16
 
@@ -141,35 +142,21 @@ export const usersLikeCardDelete = async (cardId) => {
   return result_deleteLikes;
 };
 
-export const usersLikeChange = async (cardId) => {
+//АВАТАР
+export const changeAvatar = async (avatar) => {
   const res = await fetch(
-    `https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`,
+    "https://nomoreparties.co/v1/pwff-cohort-1/users/me/avatar",
     {
       method: "PATCH",
       headers: {
         authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        avatar: avatar,
+      }),
     }
   );
-  const result_Changelikes = await res.json();
-  return result_Changelikes;
-};
-
-//АВАТАР
-export const changeAvatar = (avatar) => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me/avatar", {
-    method: "PATCH",
-    headers: {
-      authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      link: avatar,
-    }),
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      return result;
-    });
+  const result_1 = await res.json();
+  return result_1;
 };

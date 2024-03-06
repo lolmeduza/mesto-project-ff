@@ -1,5 +1,3 @@
-import { usersLikeCardAdd, usersLikeCardDelete } from "./api";
-
 export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate
@@ -9,16 +7,17 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   cardName.src = data.link;
   cardName.alt = data.alt;
   listElement.querySelector(".card__title").textContent = data.name;
+
   const likesCount = listElement.querySelector(".likes_count");
+
+  const isLiked = data.likes.some((like) => like._id == userID);
+  console.log(data);
+  const likeButton = listElement.querySelector(".card__like-button");
+  if (isLiked) likeButton.classList.add("card__like-button_is-active");
   likesCount.textContent = data.likes.length;
 
-  // const isLiked = data.likes.some((like) => like.id == userID);
-  // if (isLiked) likeButton.classList.add("card__like-button_is-active");
-  // likesCount.textContent = data.likes.length;
-
   const deleteButton = listElement.querySelector(".card__delete-button");
-  // console.log(userID);
-  // console.log(data.owner);
+
   const listItem = deleteButton.closest(".card");
   if (data.owner._id == userID) {
     deleteButton.addEventListener("click", () => {
@@ -34,16 +33,11 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
     clickImageFullScreen(data);
   });
 
-  listElement.addEventListener("click", () => {});
-  const likeButton = listElement.querySelector(".card__like-button");
-  likeButton.addEventListener("click", like);
-  return listElement;
-}
+  likeButton.addEventListener("click", (evt) => {
+    like(evt, data._id);
+  });
 
-export function like(evt) {
-  if (evt.target.classList.contains("card__like-button")) {
-    evt.target.classList.toggle("card__like-button_is-active");
-  }
+  return listElement;
 }
 
 export function handleDeleteCard(element) {

@@ -40,6 +40,12 @@ Promise.all([cardsServer(), userServer()]).then(([cards, user]) => {
   });
 });
 
+userServer().then((res) => {
+  const loadAvatar = document.querySelector(".profile__image");
+  loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
+  console.log(res);
+});
+
 const modalEditProfile = document.querySelector(".popup_type_edit");
 const buttonOpenModalEditProfile = document.querySelector(
   ".profile__edit-button"
@@ -52,7 +58,9 @@ buttonOpenModalEditProfile.addEventListener("click", () => {
   openModal(modalEditProfile);
 });
 
-const buttonCloseModalEditProfile = document.querySelector(".popup__close");
+const buttonCloseModalEditProfile = document.querySelector(
+  ".popup_type_edit_close"
+);
 buttonCloseModalEditProfile.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
@@ -147,3 +155,21 @@ function onDelete(cardId, element) {
     closeModal(modalConfirm);
   });
 }
+
+const modalAvatarChange = document.querySelector(".popup_avatar");
+// const buttonOpenModalAvatar = document.querySelector(".Avatar__edit-button");
+const buttonOpenModalAvatar = document.querySelector(".profile__image");
+// profile__image;
+buttonOpenModalAvatar.addEventListener("click", () => {
+  // nameInput.value = profileTitle.textContent;
+  // jobInput.value = profileDescription.textContent;
+  // clearValidation(formEditProfile);
+  openModal(modalAvatarChange);
+});
+
+const buttonCloseModalAvatarChange = document.querySelector(
+  ".button__avatar__close"
+);
+buttonCloseModalAvatarChange.addEventListener("click", () => {
+  closeModal(modalAvatarChange);
+});

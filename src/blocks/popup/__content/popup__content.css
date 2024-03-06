@@ -28,3 +28,18 @@
   box-sizing: border-box;
   padding: 1px 36px;
 }
+
+.popup__content_avatar {
+  max-width: 430px;
+  width: 100%;
+  min-height: 272px;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 25px 36px;
+}
+
+.form__input-error {
+  color: red;
+}

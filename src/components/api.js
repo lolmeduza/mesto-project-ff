@@ -156,4 +156,20 @@ export const usersLikeChange = async (cardId) => {
   return result_Changelikes;
 };
 
-// PATCH https://nomoreparties.co/v1/cohortId/users/me/avatar
+//АВАТАР
+export const changeAvatar = (avatar) => {
+  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me/avatar", {
+    method: "PATCH",
+    headers: {
+      authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      link: avatar,
+    }),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      return result;
+    });
+};

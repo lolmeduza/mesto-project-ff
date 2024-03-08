@@ -56,7 +56,6 @@ const loadAvatar = document.querySelector(".profile__image");
 userServer()
   .then((res) => {
     loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
-    console.log(res);
   })
   .catch((err) => {
     console.log(err);
@@ -228,7 +227,6 @@ const buttonChangeAvatar = document.querySelector(".popup__button_avatar");
 buttonChangeAvatar.addEventListener("click", (evt) => {
   evt.preventDefault();
   const avatarUrl = document.querySelector(".avatar_url").value;
-  console.log(avatarUrl);
   changeAvatar(avatarUrl)
     .then((res) =>
       loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`)
@@ -240,7 +238,6 @@ buttonChangeAvatar.addEventListener("click", (evt) => {
 });
 
 function like(evt, id) {
-  console.log(id);
   if (evt.target.classList.contains("card__like-button")) {
     const likesCount = evt.target.querySelector(".likes_count");
     if (evt.target.classList.contains("card__like-button_is-active")) {

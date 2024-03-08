@@ -18,9 +18,7 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const listItem = deleteButton.closest(".card");
   if (data.owner._id == userID) {
     deleteButton.addEventListener("click", () => {
-      // openModal(modalConfirm);
       onDelete(data._id, listItem);
-      // deleteCard(data._id);
     });
   } else {
     deleteButton.remove();
@@ -40,16 +38,3 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
 export function handleDeleteCard(element) {
   element.remove();
 }
-
-// export const createCardElement=(
-// data,{
-//   onPreviewPicture, onLikeIcon, onDeleteCard
-// }userID
-// )=>{
-// const cardElement = getTemplate();
-// const likeButton=cardElement.querySelector('.card__like-button')
-// const deleteButton = cardElement.querySelector('.card__delete-button')
-// const cardImage = cardElement.querySelector('.card__image')
-// const likesCount = cardElement.querySelector('.card__like-count')
-// }
-//проверка лайка

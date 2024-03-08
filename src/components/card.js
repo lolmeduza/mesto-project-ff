@@ -7,11 +7,8 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   cardName.src = data.link;
   cardName.alt = data.alt;
   listElement.querySelector(".card__title").textContent = data.name;
-
   const likesCount = listElement.querySelector(".likes_count");
-
   const isLiked = data.likes.some((like) => like._id == userID);
-  console.log(data);
   const likeButton = listElement.querySelector(".card__like-button");
   if (isLiked) likeButton.classList.add("card__like-button_is-active");
   likesCount.textContent = data.likes.length;

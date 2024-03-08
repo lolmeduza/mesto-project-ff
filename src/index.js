@@ -9,7 +9,6 @@
 // @todo: Вывести карточки на страницу
 
 import "./pages/index.css";
-// import { initialCards } from "./components/cards.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { handleDeleteCard, createCard } from "./components/card.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
@@ -23,37 +22,54 @@ import {
   usersLikeCardAdd,
   usersLikeCardDelete,
 } from "./components/api.js";
-console.log(cardsServer());
-enableValidation();
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_inactive",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+};
+enableValidation(validationConfig);
 const placesList = document.querySelector(".places__list");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitle = document.querySelector(".profile__title");
-// let user = {};
 
 function renderCard(element) {
   placesList.append(element);
 }
 
-Promise.all([cardsServer(), userServer()]).then(([cards, user]) => {
-  sessionStorage.setItem("user", user);
-  cards.forEach((card) => {
-    renderCard(
-      createCard(card, onDelete, like, clickImageFullScreen, user._id)
-    );
+Promise.all([cardsServer(), userServer()])
+  .then(([cards, user]) => {
+    sessionStorage.setItem("user", user);
+    cards.forEach((card) => {
+      renderCard(
+        createCard(card, onDelete, like, clickImageFullScreen, user._id)
+      );
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
 
 const loadAvatar = document.querySelector(".profile__image");
-userServer().then((res) => {
-  loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
-  console.log(res);
-});
+userServer()
+  .then((res) => {
+    loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-//загрузка имени
-userServer().then((res) => {
-  profileTitle.innerHTML = `${res.name}`;
-  profileDescription.innerHTML = `${res.about}`;
-});
+userServer()
+  .then((res) => {
+    profileTitle.innerHTML = `${res.name}`;
+    profileDescription.innerHTML = `${res.about}`;
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const modalEditProfile = document.querySelector(".popup_type_edit");
 const buttonOpenModalEditProfile = document.querySelector(
@@ -63,7 +79,7 @@ const buttonOpenModalEditProfile = document.querySelector(
 buttonOpenModalEditProfile.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
-  clearValidation(formEditProfile);
+  clearValidation(formEditProfile, validationConfig);
   openModal(modalEditProfile);
 });
 
@@ -75,8 +91,6 @@ buttonCloseModalEditProfile.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
 
-// popup__button_change_name кнопка сохранить
-// это для изменения имени и работы
 const buttonChangeNamenJob = document.querySelector(
   ".popup__button_change_name"
 );
@@ -84,10 +98,15 @@ buttonChangeNamenJob.addEventListener("click", (evt) => {
   evt.preventDefault();
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
-  changeUserName(nameValue, jobValue).then((res) => {
-    (profileTitle.innerHTML = `${res.name}`),
-      (profileDescription.innerHTML = `${res.about}`);
-  });
+  changeUserName(nameValue, jobValue)
+    .then((res) => {
+      (profileTitle.innerHTML = `${res.name}`),
+        (profileDescription.innerHTML = `${res.about}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  buttonChangeNamenJob.textContent = "Сохранение...";
   closeModal(modalEditProfile);
 });
 
@@ -131,6 +150,10 @@ const cardInput = formCardAdd.querySelector(".popup__input_type_card-name");
 const urlInput = formCardAdd.querySelector(".popup__input_type_url");
 function handleAddSubmit(evt) {
   evt.preventDefault();
+  const buttonSaveNewPlace = document.querySelector(
+    ".button__close_save_new_place"
+  );
+  buttonSaveNewPlace.textContent = "Сохранение...";
   const user = sessionStorage.getItem("user");
   const data = {
     name: cardInput.value,
@@ -142,7 +165,9 @@ function handleAddSubmit(evt) {
   };
 
   prependCard(createCard(data, onDelete, like, clickImageFullScreen, user._id));
-  addNewCard(cardInput.value, urlInput.value); //fixit
+  addNewCard(cardInput.value, urlInput.value).catch((err) => {
+    console.log(err);
+  });
   closeModal(modalAddCard);
   formCardAdd.reset();
 }
@@ -173,6 +198,10 @@ function onDelete(cardId, element) {
       .then(() => {
         handleDeleteCard(element);
       })
+      .catch((err) => {
+        console.log(err);
+      })
+
       .finally(() => {
         confirmButton.textContent = "Да";
       });
@@ -200,9 +229,13 @@ buttonChangeAvatar.addEventListener("click", (evt) => {
   evt.preventDefault();
   const avatarUrl = document.querySelector(".avatar_url").value;
   console.log(avatarUrl);
-  changeAvatar(avatarUrl).then((res) =>
-    loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`)
-  );
+  changeAvatar(avatarUrl)
+    .then((res) =>
+      loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`)
+    )
+    .catch((err) => {
+      console.log(err);
+    });
   closeModal(modalAvatarChange);
 });
 
@@ -214,12 +247,14 @@ function like(evt, id) {
       usersLikeCardDelete(id).then((res) => {
         likesCount.textContent = res.likes.length;
       });
-      // likesCount.textContent--;
     } else {
-      usersLikeCardAdd(id).then((res) => {
-        likesCount.textContent = res.likes.length;
-      });
-      // likesCount.textContent++;
+      usersLikeCardAdd(id)
+        .then((res) => {
+          likesCount.textContent = res.likes.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
   evt.target.classList.toggle("card__like-button_is-active");

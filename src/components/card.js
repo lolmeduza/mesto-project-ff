@@ -1,4 +1,5 @@
 export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
+  // console.log(data);
   const listTemplate = document.querySelector("#card-template").content;
   const listElement = listTemplate
     .querySelector(".places__item")
@@ -12,7 +13,6 @@ export function createCard(data, onDelete, like, clickImageFullScreen, userID) {
   const likeButton = listElement.querySelector(".card__like-button");
   if (isLiked) likeButton.classList.add("card__like-button_is-active");
   likesCount.textContent = data.likes.length;
-
   const deleteButton = listElement.querySelector(".card__delete-button");
 
   const listItem = deleteButton.closest(".card");

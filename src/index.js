@@ -39,9 +39,12 @@ function renderCard(element) {
   placesList.append(element);
 }
 
+let userGlobal = null;
+
 Promise.all([cardsServer(), userServer()])
   .then(([cards, user]) => {
-    sessionStorage.setItem("user", user);
+    userGlobal = user;
+    // sessionStorage.setItem("user", user);
     cards.forEach((card) => {
       renderCard(
         createCard(card, onDelete, like, clickImageFullScreen, user._id)
@@ -104,6 +107,9 @@ buttonChangeNamenJob.addEventListener("click", (evt) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      buttonChangeNamenJob.textContent = "Сохранить";
     });
   buttonChangeNamenJob.textContent = "Сохранение...";
   closeModal(modalEditProfile);
@@ -132,6 +138,7 @@ const nameInput = formEditProfile.querySelector(".popup__input_type_name");
 const jobInput = formEditProfile.querySelector(
   ".popup__input_type_description"
 );
+
 function submitFormEditProfile(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
@@ -152,26 +159,29 @@ function handleAddSubmit(evt) {
   const buttonSaveNewPlace = document.querySelector(
     ".button__close_save_new_place"
   );
-  buttonSaveNewPlace.textContent = "Сохранение...";
-  const user = sessionStorage.getItem("user");
-  const data = {
-    name: cardInput.value,
-    link: urlInput.value,
-    alt: cardInput.value,
-    owner: user,
-    likes: [],
-    _id: user._id,
-  };
 
-  prependCard(createCard(data, onDelete, like, clickImageFullScreen, user._id));
-  addNewCard(cardInput.value, urlInput.value).catch((err) => {
-    console.log(err);
-  });
+  buttonSaveNewPlace.textContent = "Сохранение...";
+  const user = userGlobal;
+
+  addNewCard(cardInput.value, urlInput.value)
+    .then((data) => {
+      console.log(data);
+      prependCard(
+        createCard(data, onDelete, like, clickImageFullScreen, user._id)
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      buttonSaveNewPlace.textContent = "Сохранить";
+    });
+
   closeModal(modalAddCard);
   formCardAdd.reset();
 }
-formCardAdd.addEventListener("submit", handleAddSubmit);
 
+formCardAdd.addEventListener("submit", handleAddSubmit);
 function clickImageFullScreen(data) {
   const selectedImage = popupImage.querySelector(".popup__image");
   selectedImage.src = data.link;
@@ -243,11 +253,13 @@ function like(evt, id) {
     if (evt.target.classList.contains("card__like-button_is-active")) {
       usersLikeCardDelete(id).then((res) => {
         likesCount.textContent = res.likes.length;
+        console.log(res);
       });
     } else {
       usersLikeCardAdd(id)
         .then((res) => {
           likesCount.textContent = res.likes.length;
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);

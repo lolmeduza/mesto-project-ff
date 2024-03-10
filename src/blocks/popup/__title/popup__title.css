@@ -18,12 +18,16 @@
   border: 2px solid blue;
 }
 
-.name-input-error {
+/* .name-input-error {
   display: block;
   color: red;
   font-size: 12px;
-}
+} */
 
 .popup__input:invalid {
   border-bottom: 1px solid red;
+}
+
+.form__input-error {
+  font-size: 12px;
 }

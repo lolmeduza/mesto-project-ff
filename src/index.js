@@ -82,7 +82,12 @@ buttonOpenModalEditProfile.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   clearValidation(formEditProfile, validationConfig);
+
+  buttonChangeNamenJob.classList.remove("popup__button_inactive");
+  buttonChangeNamenJob.disabled = false;
   openModal(modalEditProfile);
+
+  // border-bottom: 1px solid rgba(0, 0, 0, .2);
 });
 
 const buttonCloseModalEditProfile = document.querySelector(
@@ -126,6 +131,7 @@ const buttonOpenAddCardPopup = document.querySelector(".profile__add-button");
 buttonOpenAddCardPopup.addEventListener("click", () => {
   formCardAdd.reset();
   openModal(modalAddCard);
+  clearValidation(modalAddCard, validationConfig);
 });
 
 const buttonCloseAddCardPopup = document.querySelector(".button__add__close");
@@ -176,7 +182,6 @@ function handleAddSubmit(evt) {
     .finally(() => {
       buttonSaveNewPlace.textContent = "Сохранить";
     });
-
   closeModal(modalAddCard);
   formCardAdd.reset();
 }
@@ -196,10 +201,12 @@ function onDelete(cardId, element) {
   const buttonCloseConfirmCardPopup = document.querySelector(
     ".button__confrim__close"
   );
+
   openModal(modalConfirm);
   buttonCloseConfirmCardPopup.addEventListener("click", () => {
     closeModal(modalConfirm);
   });
+
   modalConfirm.addEventListener("submit", (evt) => {
     evt.preventDefault();
     confirmButton.textContent = "Удаление...";
@@ -210,11 +217,9 @@ function onDelete(cardId, element) {
       .catch((err) => {
         console.log(err);
       })
-
       .finally(() => {
         confirmButton.textContent = "Да";
       });
-
     closeModal(modalConfirm);
   });
 }
@@ -229,6 +234,7 @@ buttonOpenModalAvatar.addEventListener("click", () => {
 const buttonCloseModalAvatarChange = document.querySelector(
   ".button__avatar__close"
 );
+
 buttonCloseModalAvatarChange.addEventListener("click", () => {
   closeModal(modalAvatarChange);
 });

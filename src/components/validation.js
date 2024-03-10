@@ -16,6 +16,8 @@ const hideInputError = (formElement, inputElement, classError, classActive) => {
   inputElement.classList.remove(classError);
   errorElement.classList.remove(classActive);
   errorElement.textContent = "";
+  // console.log(inputElement);
+  // console.log(errorElement);
 };
 
 const isValid = (formElement, inputElement, classError, classActive) => {
@@ -93,5 +95,6 @@ export const clearValidation = (pageForm, validationConfig) => {
       validationConfig.inputErrorClass,
       validationConfig.errorClass
     );
+    inputElement.setCustomValidity("");
   });
 };

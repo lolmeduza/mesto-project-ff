@@ -86,8 +86,6 @@ buttonOpenModalEditProfile.addEventListener("click", () => {
   buttonChangeNamenJob.classList.remove("popup__button_inactive");
   buttonChangeNamenJob.disabled = false;
   openModal(modalEditProfile);
-
-  // border-bottom: 1px solid rgba(0, 0, 0, .2);
 });
 
 const buttonCloseModalEditProfile = document.querySelector(
@@ -101,6 +99,7 @@ buttonCloseModalEditProfile.addEventListener("click", () => {
 const buttonChangeNamenJob = document.querySelector(
   ".popup__button_change_name"
 );
+
 buttonChangeNamenJob.addEventListener("click", (evt) => {
   evt.preventDefault();
   const nameValue = nameInput.value;
@@ -187,6 +186,7 @@ function handleAddSubmit(evt) {
 }
 
 formCardAdd.addEventListener("submit", handleAddSubmit);
+
 function clickImageFullScreen(data) {
   const selectedImage = popupImage.querySelector(".popup__image");
   selectedImage.src = data.link;
@@ -196,18 +196,19 @@ function clickImageFullScreen(data) {
 }
 
 const confirmButton = document.querySelector(".popup__button_confirm");
+
 function onDelete(cardId, element) {
   const modalConfirm = document.querySelector(".popup_confirm");
   const buttonCloseConfirmCardPopup = document.querySelector(
     ".button__confrim__close"
   );
-
   openModal(modalConfirm);
   buttonCloseConfirmCardPopup.addEventListener("click", () => {
+    modalConfirm.removeEventListener("submit", submitConfirm);
     closeModal(modalConfirm);
   });
 
-  modalConfirm.addEventListener("submit", (evt) => {
+  const submitConfirm = (evt) => {
     evt.preventDefault();
     confirmButton.textContent = "Удаление...";
     deleteCard(cardId)
@@ -220,14 +221,19 @@ function onDelete(cardId, element) {
       .finally(() => {
         confirmButton.textContent = "Да";
       });
+    modalConfirm.removeEventListener("submit", submitConfirm);
     closeModal(modalConfirm);
-  });
+  };
+  modalConfirm.addEventListener("submit", submitConfirm);
 }
 
 const modalAvatarChange = document.querySelector(".popup_avatar");
 const buttonOpenModalAvatar = document.querySelector(".profile__image");
 
 buttonOpenModalAvatar.addEventListener("click", () => {
+  clearValidation(modalAvatarChange, validationConfig);
+  const ava = document.querySelector(".avatar_url");
+  ava.value = "";
   openModal(modalAvatarChange);
 });
 

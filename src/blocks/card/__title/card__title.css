@@ -6,5 +6,6 @@
   white-space: nowrap;
   overflow: hidden;
   /*Либо с точками из макета, либо этот набор свойств для эллипсиса текста в можно лучше*/
+  background-image: (90deg, #59bbff, #be41ff 30%, #ff98ea);
   margin: 0;
 }

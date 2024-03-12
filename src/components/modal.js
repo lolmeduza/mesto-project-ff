@@ -13,11 +13,6 @@ function clickCallback(evt) {
   }
 }
 
-const popUps = document.querySelectorAll(".popup");
-popUps.forEach((popUp) => {
-  popUp.classList.toggle("popup_is-animated");
-});
-
 export function openModal(modal) {
   document.addEventListener("keydown", keydownCallback);
   document.addEventListener("click", clickCallback);

@@ -40,34 +40,18 @@ function renderCard(element) {
 }
 
 let userGlobal = null;
-
+const loadAvatar = document.querySelector(".profile__image");
 Promise.all([cardsServer(), userServer()])
   .then(([cards, user]) => {
     userGlobal = user;
-    // sessionStorage.setItem("user", user);
+    loadAvatar.setAttribute("style", `background-image:url('${user.avatar}')`);
+    profileTitle.textContent = user.name;
+    profileDescription.textContent = user.about;
     cards.forEach((card) => {
       renderCard(
         createCard(card, onDelete, like, clickImageFullScreen, user._id)
       );
     });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-const loadAvatar = document.querySelector(".profile__image");
-userServer()
-  .then((res) => {
-    loadAvatar.setAttribute("style", `background-image:url('${res.avatar}')`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-userServer()
-  .then((res) => {
-    profileTitle.innerHTML = `${res.name}`;
-    profileDescription.innerHTML = `${res.about}`;
   })
   .catch((err) => {
     console.log(err);
@@ -83,7 +67,7 @@ buttonOpenModalEditProfile.addEventListener("click", () => {
   jobInput.value = profileDescription.textContent;
   clearValidation(formEditProfile, validationConfig);
 
-  buttonChangeNamenJob.classList.remove("popup__button_inactive");
+  // buttonChangeNamenJob.classList.remove("popup__button_inactive");
   buttonChangeNamenJob.disabled = false;
   openModal(modalEditProfile);
 });
@@ -106,8 +90,8 @@ buttonChangeNamenJob.addEventListener("click", (evt) => {
   const jobValue = jobInput.value;
   changeUserName(nameValue, jobValue)
     .then((res) => {
-      (profileTitle.innerHTML = `${res.name}`),
-        (profileDescription.innerHTML = `${res.about}`);
+      (profileTitle.textContent = res.name),
+        (profileDescription.textContent = res.about);
     })
     .catch((err) => {
       console.log(err);
@@ -166,13 +150,13 @@ function handleAddSubmit(evt) {
   );
 
   buttonSaveNewPlace.textContent = "Сохранение...";
-  const user = userGlobal;
+  // const user = userGlobal;
 
   addNewCard(cardInput.value, urlInput.value)
     .then((data) => {
       console.log(data);
       prependCard(
-        createCard(data, onDelete, like, clickImageFullScreen, user._id)
+        createCard(data, onDelete, like, clickImageFullScreen, userGlobal._id)
       );
     })
     .catch((err) => {
@@ -195,36 +179,41 @@ function clickImageFullScreen(data) {
   openModal(popupImage);
 }
 
+let cardToDeleteId = null;
+let cardToDelete = null;
+
 const confirmButton = document.querySelector(".popup__button_confirm");
+const modalConfirm = document.querySelector(".popup_confirm");
+modalConfirm.addEventListener("submit", submitConfirm);
+
+const submitConfirm = (evt) => {
+  evt.preventDefault();
+  confirmButton.textContent = "Удаление...";
+  deleteCard(cardToDeleteId)
+    .then(() => {
+      handleDeleteCard(cardToDelete);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      confirmButton.textContent = "Да";
+    });
+  // modalConfirm.removeEventListener("submit", submitConfirm);
+  closeModal(modalConfirm);
+};
 
 function onDelete(cardId, element) {
-  const modalConfirm = document.querySelector(".popup_confirm");
   const buttonCloseConfirmCardPopup = document.querySelector(
     ".button__confrim__close"
   );
+  cardToDeleteId = cardId;
+  cardToDelete = element;
   openModal(modalConfirm);
   buttonCloseConfirmCardPopup.addEventListener("click", () => {
-    modalConfirm.removeEventListener("submit", submitConfirm);
+    // modalConfirm.removeEventListener("submit", submitConfirm);
     closeModal(modalConfirm);
   });
-
-  const submitConfirm = (evt) => {
-    evt.preventDefault();
-    confirmButton.textContent = "Удаление...";
-    deleteCard(cardId)
-      .then(() => {
-        handleDeleteCard(element);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        confirmButton.textContent = "Да";
-      });
-    modalConfirm.removeEventListener("submit", submitConfirm);
-    closeModal(modalConfirm);
-  };
-  modalConfirm.addEventListener("submit", submitConfirm);
 }
 
 const modalAvatarChange = document.querySelector(".popup_avatar");
@@ -232,8 +221,8 @@ const buttonOpenModalAvatar = document.querySelector(".profile__image");
 
 buttonOpenModalAvatar.addEventListener("click", () => {
   clearValidation(modalAvatarChange, validationConfig);
-  const ava = document.querySelector(".avatar_url");
-  ava.value = "";
+  const avatarInput = document.querySelector(".avatar_url");
+  avatarInput.value = "";
   openModal(modalAvatarChange);
 });
 
@@ -259,24 +248,46 @@ buttonChangeAvatar.addEventListener("click", (evt) => {
   closeModal(modalAvatarChange);
 });
 
+// function like(evt, id) {
+//   if (evt.target.classList.contains("card__like-button")) {
+//     const likesCount = evt.target.querySelector(".likes_count");
+//     if (evt.target.classList.contains("card__like-button_is-active")) {
+//       usersLikeCardDelete(id).then((res) => {
+//         evt.target.classList.toggle("card__like-button_is-active");
+//         likesCount.textContent = res.likes.length;
+//         // console.log(res);
+//       });
+//     } else {
+//       usersLikeCardAdd(id)
+//         .then((res) => {
+//           likesCount.textContent = res.likes.length;
+//           evt.target.classList.toggle("card__like-button_is-active");
+//           // console.log(res);
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         });
+//     }
+//   }
+// }
+
+//переместить вверх
+const popUps = document.querySelectorAll(".popup");
+popUps.forEach((popUp) => {
+  popUp.classList.toggle("popup_is-animated");
+});
+
 function like(evt, id) {
-  if (evt.target.classList.contains("card__like-button")) {
-    const likesCount = evt.target.querySelector(".likes_count");
-    if (evt.target.classList.contains("card__like-button_is-active")) {
-      usersLikeCardDelete(id).then((res) => {
-        likesCount.textContent = res.likes.length;
-        console.log(res);
-      });
-    } else {
-      usersLikeCardAdd(id)
-        .then((res) => {
-          likesCount.textContent = res.likes.length;
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }
-  evt.target.classList.toggle("card__like-button_is-active");
+  const likesCount = evt.target.querySelector(".likes_count");
+  const likeMethod = evt.target.classList.contains(
+    "card__like-button_is-active"
+  )
+    ? usersLikeCardDelete
+    : usersLikeCardAdd;
+  likeMethod(id)
+    .then((res) => {
+      likesCount.textContent = res.likes.length;
+      evt.target.classList.toggle("card__like-button_is-active");
+    })
+    .catch((err) => console.log(err));
 }

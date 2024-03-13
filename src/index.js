@@ -207,16 +207,16 @@ const submitConfirm = (evt) => {
 modalConfirm.addEventListener("submit", submitConfirm);
 
 function onDelete(cardId, element) {
-  const buttonCloseConfirmCardPopup = document.querySelector(
-    ".button__confrim__close"
-  );
   cardToDeleteId = cardId;
   cardToDelete = element;
   openModal(modalConfirm);
-  buttonCloseConfirmCardPopup.addEventListener("click", () => {
-    closeModal(modalConfirm);
-  });
 }
+const buttonCloseConfirmCardPopup = document.querySelector(
+  ".button__confrim__close"
+);
+buttonCloseConfirmCardPopup.addEventListener("click", () => {
+  closeModal(modalConfirm);
+});
 
 const modalAvatarChange = document.querySelector(".popup_avatar");
 const buttonOpenModalAvatar = document.querySelector(".profile__image");

@@ -5,6 +5,13 @@ const configFetch = {
   authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
 };
 
+const handleResponse = async (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
+
 export const cardsServer = async () => {
   try {
     const res = await fetch(`${configFetch.baseUrl}/cards`, {
@@ -15,7 +22,7 @@ export const cardsServer = async () => {
     const userCards = await res.json();
     return userCards;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -29,7 +36,7 @@ export const userServer = async () => {
     const userInfo = await res.json();
     return userInfo;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -49,7 +56,7 @@ export const changeUserName = async (name, description) => {
     const userChangeName = await res.json();
     return userChangeName;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -69,7 +76,7 @@ export const addNewCard = async (nameCard, imageNew) => {
     const userAddNCard = await res.json();
     return userAddNCard;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -84,7 +91,7 @@ export const deleteCard = async (cardId) => {
     const userDeleteCard = await res.json();
     return userDeleteCard;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -100,7 +107,7 @@ export const usersLikeCardAdd = async (cardId) => {
     const result_likes = await res.json();
     return result_likes;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -116,7 +123,7 @@ export const usersLikeCardDelete = async (cardId) => {
     const result_deleteLikes = await res.json();
     return result_deleteLikes;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };
 
@@ -135,6 +142,6 @@ export const changeAvatar = async (avatar) => {
     const userChangeAvatar = await res.json();
     return userChangeAvatar;
   } catch (err) {
-    return Promise.reject(`Ошибка: ${err}`);
+    return handleResponse(res);
   }
 };

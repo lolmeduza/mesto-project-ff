@@ -11,7 +11,11 @@
 import "./pages/index.css";
 import { openModal, closeModal } from "./components/modal.js";
 import { handleDeleteCard, createCard } from "./components/card.js";
-import { enableValidation, clearValidation } from "./components/validation.js";
+import {
+  enableValidation,
+  clearValidation,
+  enableSubmitButton,
+} from "./components/validation.js";
 import {
   cardsServer,
   userServer,
@@ -62,13 +66,18 @@ const buttonOpenModalEditProfile = document.querySelector(
   ".profile__edit-button"
 );
 
+const buttonChangeNamenJob = document.querySelector(
+  ".popup__button_change_name"
+);
+
 buttonOpenModalEditProfile.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   clearValidation(formEditProfile, validationConfig);
-
-  // buttonChangeNamenJob.classList.remove("popup__button_inactive");
-  buttonChangeNamenJob.disabled = false;
+  enableSubmitButton(
+    buttonChangeNamenJob,
+    validationConfig.inactiveButtonClass
+  );
   openModal(modalEditProfile);
 });
 
@@ -79,10 +88,6 @@ const buttonCloseModalEditProfile = document.querySelector(
 buttonCloseModalEditProfile.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
-
-const buttonChangeNamenJob = document.querySelector(
-  ".popup__button_change_name"
-);
 
 buttonChangeNamenJob.addEventListener("click", (evt) => {
   evt.preventDefault();
@@ -150,11 +155,9 @@ function handleAddSubmit(evt) {
   );
 
   buttonSaveNewPlace.textContent = "Сохранение...";
-  // const user = userGlobal;
 
   addNewCard(cardInput.value, urlInput.value)
     .then((data) => {
-      console.log(data);
       prependCard(
         createCard(data, onDelete, like, clickImageFullScreen, userGlobal._id)
       );
@@ -184,7 +187,6 @@ let cardToDelete = null;
 
 const confirmButton = document.querySelector(".popup__button_confirm");
 const modalConfirm = document.querySelector(".popup_confirm");
-modalConfirm.addEventListener("submit", submitConfirm);
 
 const submitConfirm = (evt) => {
   evt.preventDefault();
@@ -199,9 +201,10 @@ const submitConfirm = (evt) => {
     .finally(() => {
       confirmButton.textContent = "Да";
     });
-  // modalConfirm.removeEventListener("submit", submitConfirm);
   closeModal(modalConfirm);
 };
+
+modalConfirm.addEventListener("submit", submitConfirm);
 
 function onDelete(cardId, element) {
   const buttonCloseConfirmCardPopup = document.querySelector(
@@ -211,7 +214,6 @@ function onDelete(cardId, element) {
   cardToDelete = element;
   openModal(modalConfirm);
   buttonCloseConfirmCardPopup.addEventListener("click", () => {
-    // modalConfirm.removeEventListener("submit", submitConfirm);
     closeModal(modalConfirm);
   });
 }
@@ -248,30 +250,6 @@ buttonChangeAvatar.addEventListener("click", (evt) => {
   closeModal(modalAvatarChange);
 });
 
-// function like(evt, id) {
-//   if (evt.target.classList.contains("card__like-button")) {
-//     const likesCount = evt.target.querySelector(".likes_count");
-//     if (evt.target.classList.contains("card__like-button_is-active")) {
-//       usersLikeCardDelete(id).then((res) => {
-//         evt.target.classList.toggle("card__like-button_is-active");
-//         likesCount.textContent = res.likes.length;
-//         // console.log(res);
-//       });
-//     } else {
-//       usersLikeCardAdd(id)
-//         .then((res) => {
-//           likesCount.textContent = res.likes.length;
-//           evt.target.classList.toggle("card__like-button_is-active");
-//           // console.log(res);
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//         });
-//     }
-//   }
-// }
-
-//переместить вверх
 const popUps = document.querySelectorAll(".popup");
 popUps.forEach((popUp) => {
   popUp.classList.toggle("popup_is-animated");

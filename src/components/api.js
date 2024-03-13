@@ -5,9 +5,6 @@ const configFetch = {
   authorization: "9d491a38-0ff6-417b-ad82-82b9e97a5eb8",
 };
 
-// const answerError = b;
-// return Promise.reject(Ошибка: ${res.status});
-
 export const cardsServer = async () => {
   try {
     const res = await fetch(`${configFetch.baseUrl}/cards`, {
